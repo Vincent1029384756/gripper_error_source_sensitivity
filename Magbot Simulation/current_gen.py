@@ -1,4 +1,7 @@
 import numpy as np
+from simfuncs import motion_model_spring_damper
+import pandas as pd
+import math
 
 '''
 This function takes in q_d in radians, and returns a 8 by 1 coil curent matrix u
@@ -22,3 +25,4 @@ def u_gen(qd, msr):
     u = -M_u_pinv@tau_U
 
     return u
+

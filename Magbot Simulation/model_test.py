@@ -7,6 +7,8 @@ from magSerialRobot import MagSerialRobot as MSR
 import math
 from simfuncs import motion_model_spring_damper
 from LPfilter import LPfilter
+from current_gen import u_gen
+import time
 
 '''
 In this script, coil currents are gnerated based on open loop control.
@@ -46,65 +48,116 @@ c = np.array([[0.00098, 0],
 
 #Decide on desired joint angles (qd)
 print('***********************************************************************************')
-user_input1 = input("What is the desired first joint angel in degrees: ")
-user_input2 = input("What is the desired second joint angel in degrees: ")
 
-qd1 = float(user_input1)
-qd2 = float(user_input2)
-qd_degree = np.array([qd1, qd2])
 
-#convert degrees to radians, as the rest of the calculations are carried out in radians
-qd = np.radians(qd_degree)
-
-#since we need to find tau_K at the desired configuration, we will use the desired angle
-#when initializing msr
-msr = MSR(numLinks, linkLength, linkTwist, linkOffset, qd, jointType, T)
+#initialize msr
+q = np.array([0.0,0.0])
+msr = MSR(numLinks, linkLength, linkTwist, linkOffset, q, jointType, T)
 
 msr.m_change_magnets(magnetLocal, magnetPosLocal)
 msr.m_set_joint_stiffness(K, c)
 
-#calculate tau_int
-tau_int = msr.m_calc_internal_gen_forces()
-#calculate tau_S
-tau_S = msr.m_calc_joint_force()
+#let user name the csv file
+user_input = input("PLease enter a name for the csv file you want to save: ")
+file_name = str(user_input)
 
-#calculate tau_U
-tau_U = tau_int + tau_S
+#initialize csv file
+row1 = np.array([0,0,0,0,0,0,0,0,0])
+df = pd.DataFrame([row1])
+df.to_csv(file_name, index = False, header = False)
 
-#now solve for u
-M_u = msr.m_calc_actuation_matrix()
-M_u_pinv = np.linalg.pinv(M_u)
-u = -M_u_pinv@tau_U
+cont = True
+i = 1
 
-'''
-The output u is only a 8*1 matrix, when passing this output to the real coil, the magnetic field will
-only last a very brief moment.
-To provide a sustained current, we need to repeat u in the final output
-'''
+while cont == True:
+    user_input1 = input("What is the desired first joint angel in degrees: ")
+    user_input2 = input("What is the desired second joint angel in degrees: ")
+    user_input3 = input("How long you want to actuate the gripper in this current setting (in seconds): ")
 
-#let user nae the csv file
-user_input3 = input("PLease enter a name for the csv file you want to save: ")
-file_name = str(user_input3)
+    qd1 = float(user_input1)
+    qd2 = float(user_input2)
+    qd_degree = np.array([qd1, qd2])
 
-#wrriing the csv file
-for i in range(200):
+    #convert degrees to radians, as the rest of the calculations are carried out in radians
+    qd = np.radians(qd_degree)
+
+    t_total = float(user_input3)
+
+    #geberate u
+    u = u_gen(qd, msr)
+
+    #show user the current coil current setting
+    print("Current coil current setting")
+    print(u)
+
+    #actuate msr
+    #compute torques and configurations of each time step, then record them on the dedicated csv file
     
-    #set up time
-    index = i+1
-    time = 67*i
+    t_step = 0.1
 
-    #adding index and time to each row
-    new_number = np.array([index, time])
-    row = np.concatenate((new_number, u)).reshape(1, -1)
-    df = pd.DataFrame(row)
-    
-    #intial numpy array
-    if i == 0:
-        df.to_csv(file_name, index=False, header=False)
-    
-    #append other rows
+    for t in range(int(t_total/t_step)):
+        #update torques and joint angles
+        q, tau_u, tau_int, tau_s = motion_model_spring_damper(q, u, t_step, msr)
+
+        q1 = q[0]*(180/math.pi)
+        q2 = q[1]*(180/math.pi)
+
+
+        #collects output
+        output = np.array([t+i, q1, q2, tau_u[0], tau_u[1], tau_int[0], tau_int[1], tau_s[0], tau_s[1]])
+
+         # Reshape to 2D array with one row
+        output_reshaped = output.reshape(1, -1)
+
+        # Append new output to CSV
+        df = pd.DataFrame(output_reshaped)
+        df.to_csv(file_name, mode='a', index = False, header = False)
+
+    #determine if user wants to continue
+    user_input4 = input("Do you want to continue (y/n): ")
+    input4 = str(user_input4)
+    if input4 == 'y' or input4 == 'Y':
+        cont = True
+    elif input4 == 'n' or input4 == 'N':
+        cont = False
     else:
-        df.to_csv(file_name, mode='a', index=False, header=False)
+        print('Invalid input')
+    
+    i += t_total/t_step
+
 
 print(f"Data saved successfully to {file_name}")
 print('***********************************************************************************')
+
+#plot output
+df = pd.read_csv(file_name, header=None)
+
+# plot joint angles over time
+plt.figure(1)
+plt.title('Joint Angles over Time')
+plt.plot(df.iloc[:, 0], df.iloc[:, 1], label='Theta1')
+plt.plot(df.iloc[:, 0], df.iloc[:, 2], label='Theta2')
+plt.xlabel('Time (seconds)')
+plt.ylabel('Joint Angles (degrees)')
+plt.legend()
+
+# Plot torques
+plt.figure(2)
+plt.title('Torques vs time')
+plt.subplot(2, 1, 1)
+plt.title('Theta1')
+plt.plot(df.iloc[:, 0], df.iloc[:, 3], label='tau_u')
+plt.plot(df.iloc[:, 0], df.iloc[:, 5], label='tau_int')
+plt.plot(df.iloc[:, 0], df.iloc[:, 7], label='tau_s')
+plt.ylabel('Torque [Nm]')
+plt.subplot(2, 1, 2)
+plt.title('Theta2')
+plt.plot(df.iloc[:, 0], df.iloc[:, 4], label='tau_u')
+plt.plot(df.iloc[:, 0], df.iloc[:, 6], label='tau_int')
+plt.plot(df.iloc[:, 0], df.iloc[:, 8], label='tau_s')
+
+plt.xlabel('Time (seconds)')
+plt.ylabel('Torque [Nm]')
+plt.legend()
+
+plt.show()
