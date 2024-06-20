@@ -434,7 +434,14 @@ class MagSerialRobot():
 
         return tauInt
 
-                
+    def m_calc_tau_int(self):
+        theta = np.degrees(self.jointAngles)
+        q2 = theta[1]
+        tau_int = (-6.72855092e-5) + (-3.93665192e-06)*q2 + (1.83419779e-08)*(q2**2)+ \
+        (-5.03161647e-10)*(q2**3)
+        tauInt = np.array([0, tau_int])
+
+        return(tauInt)
 
     
 

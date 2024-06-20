@@ -104,7 +104,7 @@ while cont == True:
 
 
         #collects output
-        output = np.array([t+i, q1, q2, tau_u[0], tau_u[1], tau_int[0], tau_int[1], tau_s[0], tau_s[1]])
+        output = np.array([(t+i)/10, q1, q2, tau_u[0], tau_u[1], tau_int[0], tau_int[1], tau_s[0], tau_s[1]])
 
          # Reshape to 2D array with one row
         output_reshaped = output.reshape(1, -1)

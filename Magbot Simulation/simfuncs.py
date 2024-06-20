@@ -5,7 +5,7 @@ def motion_model_spring_damper(q_prev, u, dt, msr):
     msr.m_set_joint_angles(q_prev)
     Mu = msr.m_calc_actuation_matrix()
     tau_u = Mu@u
-    tau_int = -msr.m_calc_internal_gen_forces()
+    tau_int = -msr.m_calc_tau_int()
     tau_s = msr.m_calc_joint_force()
 
     q_new = q_prev + np.linalg.inv(msr.c_joints)@(tau_u + tau_int + tau_s)*dt 

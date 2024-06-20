@@ -12,12 +12,12 @@ def u_gen(qd, msr):
     msr.m_set_joint_angles(qd)
     
     #calculate tau_int
-    tau_int = msr.m_calc_internal_gen_forces()
+    tau_int = msr.m_calc_tau_int()
     #calculate tau_S
     tau_S = msr.m_calc_joint_force()
 
     #calculate tau_U
-    tau_U = tau_int + tau_S
+    tau_U = -tau_int + tau_S
 
     #now solve for u
     M_u = msr.m_calc_actuation_matrix()
@@ -25,4 +25,3 @@ def u_gen(qd, msr):
     u = -M_u_pinv@tau_U
 
     return u
-
