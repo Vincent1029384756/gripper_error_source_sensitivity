@@ -36,7 +36,7 @@ msr.m_set_joint_stiffness(K, c)
 
 # Import coil current data
 path = '/home/wen-gu/vincent_model/Magbot Simulation' # Change this to what it is on your computer
-data = pd.read_csv(os.path.join(path, 'test2.csv'), header='infer')
+data = pd.read_csv(os.path.join(path, 'coil_currents.csv'), header='infer')
  
 # Save estimated stuff
 output = simulate_magbot(data, np.array([rad(7), 0]), msr)
