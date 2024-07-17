@@ -63,11 +63,11 @@ dz2 = 0
 #prompt for testing case
 print('***********************************************************************************')
 print('Which translation do u want to make?')
-print('a. dx1 \nb. dy1 \nc. dz1 \nd. dx2, \ne. dy2 \nf. dz2')
+print('a. dx1 \nb. dy1 \nc. dz1 \nd. dx2 \ne. dy2 \nf. dz2')
 case = input('make your selection: ').lower()
 
 #let user name the csv file and specify the directory
-user_input_dir = '/mnt/newstorage/summer_project/results'
+user_input_dir = '/home/vincent-gu/summer_project/results'
 user_input_file = input('Name the csv file: ')
 file_path = os.path.join(user_input_dir, user_input_file)
 
@@ -76,21 +76,23 @@ headers = ['dx1','dy1','dz1','dx2','dy2','dz2', 'delta_q1', 'delta_q2']
 df = pd.DataFrame(columns=headers)
 df.to_csv(file_path, index=False)
 
+print("Uno Momento")
+
 #modify the proper prameter
 for i in range(51):
 
     if case == 'a':
-        dx1 = -0.1*i
+        dx1 = 0.1*i
     elif case == 'b':
-        dy1 = -0.1*i
+        dy1 = 0.1*i
     elif case == 'c':
-        dz1 = -0.1*i
+        dz1 = 0.1*i
     elif case == 'd':
-        dx2 = -0.1*i
+        dx2 = 0.1*i
     elif case == 'e':
-        dy2 = -0.1*i
+        dy2 = 0.1*i
     elif case == 'f':
-        dz2 = -0.1*i
+        dz2 = 0.1*i
     else:
         print("Invalid selection.")
         break
