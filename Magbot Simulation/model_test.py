@@ -32,7 +32,7 @@ linkTwist = np.array([1.571, 0.0])
 linkOffset = np.array([0.0, 0.0])
 jointType = np.array([JointType.REV, JointType.REV])
 magnetLocal = np.array([[0, 0, 0],
-                        [35.859e-3, 0, 0], 
+                        [35.723e-3, 0, -3.125e-3], 
                         [-16.088e-3, 0, 0]])  #-16.088e-3
 magnetPosLocal = np.array([[-3.2e-3, 0, 0],
                             [-3.72e-3, 0, 0], 
@@ -84,7 +84,8 @@ while cont == True:
     t_total = float(user_input3)
 
     #geberate u
-    u = u_gen(qd, msr)
+    #u = u_gen(qd, msr)
+    u = np.array([1.89561600e-01, -5.70759024e+00, -2.17568997e+00, -5.93800982e+00, 5.07753668e+00, 4.94307821e-03, 4.81793281e+00, 2.25650804e+00])
 
     #show user the current coil current setting
     print("Current coil current setting")
