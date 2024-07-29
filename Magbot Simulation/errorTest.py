@@ -39,7 +39,7 @@ msr_1 = MSR(numLinks, linkLength, linkTwist, linkOffset, q_1, jointType, T)
 msr_1.m_change_magnets(magnetLocal1, magnetPosLocal)
 msr_1.m_set_joint_stiffness(K, c)
 
-print('#####################################################################')
+print('*********************************************************************')
 print('Define the current angle')
 q1_deg = float(input('Q1: '))
 q2_deg = float(input('Q2: '))
@@ -65,19 +65,17 @@ while sure == False:
         sure = False
 
 qd = np.array([q1, q2])
-for i in tqdm(range(-3, 4, 1), desc="progress of script"):
+for a in tqdm(range(-3, 4, 1), desc="progress of script"):
     if input2 == 'a':
-        qd[0] = i*math.radians(15)
-    elif input2 == 'b':
-        qd[1] = i*math.radians(15)
-    
+        qd[0] = a*math.radians(15)
+    elif input2 == 'b' and a >= 0:
+        qd[1] = a*math.radians(15)
+    else:
+        continue
+
     print(f'current qd: {np.degrees(qd)}')
     u = u_gen(qd, msr_1)
     print(u)
-
-    magnetLocal2 = np.array([[0, 0, 0],
-                        [35.859e-3, 0, 0], 
-                        [-16.088e-3, 0, 0]])
     
     #let user name the csv file and specify the directory
     user_input_dir = '/mnt/newstorage/summer_project/results'
@@ -86,6 +84,62 @@ for i in tqdm(range(-3, 4, 1), desc="progress of script"):
     file_path = os.path.join(user_input_dir, user_input_file)
 
     #initialize csv file
-    headers = ['mag1_diver', 'mag2_diver', 'delta_q1', 'delta_q2']
+    headers = ['d_mag1', 'd_mag2', 'delta_q1', 'delta_q2']
     df = pd.DataFrame(columns=headers)
     df.to_csv(file_path, index=False)
+
+    x = []
+
+    for i in tqdm(range(-10, 10), desc='current loop'):
+
+        magnetLocal2 = np.array([[0, 0, 0],
+                        [35.859e-3, 0, 0], 
+                        [-16.088e-3, 0, 0]])
+
+        if input1 == 'a':
+            magnetLocal2[1, 0] += i*5e-4
+            d_mag1 = i*5e-4
+            d_mag2 = 0
+        
+        elif input1 == 'b':
+            magnetLocal2[2, 0] += i*5e-4
+            d_mag2 = i*5e-4
+            d_mag1 = 0
+        
+        x.append(i*5e-4)
+
+        #initiate q1 and q2
+        q_1 = np.array([q1, q2])
+        q_2 = np.array([q1, q2])
+        
+        #initiate msr_2
+        msr_2 = MSR(numLinks, linkLength, linkTwist, linkOffset, q_2, jointType, T)
+        msr_2.m_change_magnets(magnetLocal2, magnetPosLocal)
+        msr_2.m_set_joint_stiffness(K, c)
+
+        #Pass u thru both msr and calculate the difference
+        t_total = 500
+        t_step = 0.1
+
+        for t in range(int(t_total/t_step)):
+            #update torques and joint angles for msr_1
+            q_1, _, _, _ = motion_model_spring_damper(q_1, u, t_step, msr_1)
+
+            #update torques and joint angles for msr_2
+            q_2, _, _, _ = motion_model_spring_damper(q_2, u, t_step, msr_2)
+
+        delta_q = (q_2 - q_1)*(180/math.pi)
+        #print(np.degrees(q_2))
+        #print(np.degrees(q_1))
+
+        #record date
+        output = np.array([d_mag1, d_mag2, delta_q[0], delta_q[1]]).reshape(1, -1)
+        df_to_append = pd.DataFrame(output, columns=['d_mag1', 'd_mag2', 'delta_q1', 'delta_q2'])
+        df_to_append.to_csv(file_path, mode='a', index=False, header=False)
+    
+    print(f"Data saved successfully to {file_path}")
+    print('close current figure to continue')
+
+    plot_and_regress(file_path, np.array(x), 2, 3)
+
+print('*********************************************************************')

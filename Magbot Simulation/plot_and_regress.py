@@ -21,10 +21,10 @@ def plot_and_regress(csv_file, x, c_y1, c_y2):
 
     # First subplot for y1 first half
     plt.subplot(2, 2, 1)
-    plt.scatter(x1, y1_first_half, color='blue', label=f'{data.columns[c_y1]} (First Half) vs delta_theta')
-    plt.xlabel('delta_theta')
+    plt.scatter(x1, y1_first_half, color='blue', label=f'{data.columns[c_y1]} (First Half) vs delta_mag')
+    plt.xlabel('delta_mag')
     plt.ylabel(data.columns[c_y1])
-    plt.title(f'{data.columns[c_y1]} (First Half) vs delta_theta')
+    plt.title(f'{data.columns[c_y1]} (First Half) vs delta_mag')
 
     # Polynomial regression for Column 2 vs Column 1 (First Half)
     coeffs1_first = np.polyfit(x1, y1_first_half, 2)
@@ -34,10 +34,10 @@ def plot_and_regress(csv_file, x, c_y1, c_y2):
 
     # Second subplot for y1 second half
     plt.subplot(2, 2, 2)
-    plt.scatter(x2, y1_second_half, color='blue', label=f'{data.columns[c_y1]} (Second Half) vs delta_theta')
-    plt.xlabel('delta_theta')
+    plt.scatter(x2, y1_second_half, color='blue', label=f'{data.columns[c_y1]} (Second Half) vs delta_mag')
+    plt.xlabel('delta_mag')
     plt.ylabel(data.columns[c_y1])
-    plt.title(f'{data.columns[c_y1]} (Second Half) vs delta_theta')
+    plt.title(f'{data.columns[c_y1]} (Second Half) vs delta_mag')
 
     # Polynomial regression for Column 2 vs Column 1 (Second Half)
     coeffs1_second = np.polyfit(x2, y1_second_half, 2)
@@ -47,10 +47,10 @@ def plot_and_regress(csv_file, x, c_y1, c_y2):
 
     # Third subplot for y2 first half
     plt.subplot(2, 2, 3)
-    plt.scatter(x1, y2_first_half, color='green', label=f'{data.columns[c_y2]} (First Half) vs delta_theta')
-    plt.xlabel('delta_theta')
+    plt.scatter(x1, y2_first_half, color='green', label=f'{data.columns[c_y2]} (First Half) vs delta_mag')
+    plt.xlabel('delta_mag')
     plt.ylabel(data.columns[c_y2])
-    plt.title(f'{data.columns[c_y2]} (First Half) vs delta_theta')
+    plt.title(f'{data.columns[c_y2]} (First Half) vs delta_mag')
 
     # Polynomial regression for Column 3 vs Column 1 (First Half)
     coeffs2_first = np.polyfit(x1, y2_first_half, 2)
@@ -60,10 +60,10 @@ def plot_and_regress(csv_file, x, c_y1, c_y2):
 
     # Fourth subplot for y2 second half
     plt.subplot(2, 2, 4)
-    plt.scatter(x2, y2_second_half, color='green', label=f'{data.columns[c_y2]} (Second Half) vs delta_theta')
-    plt.xlabel('delta_theta')
+    plt.scatter(x2, y2_second_half, color='green', label=f'{data.columns[c_y2]} (Second Half) vs delta_mag')
+    plt.xlabel('delta_mag')
     plt.ylabel(data.columns[c_y2])
-    plt.title(f'{data.columns[c_y2]} (Second Half) vs delta_theta')
+    plt.title(f'{data.columns[c_y2]} (Second Half) vs delta_mag')
 
     # Polynomial regression for Column 3 vs Column 1 (Second Half)
     coeffs2_second = np.polyfit(x2, y2_second_half, 2)
