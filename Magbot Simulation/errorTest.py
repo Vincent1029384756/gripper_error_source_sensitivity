@@ -79,7 +79,8 @@ for a in tqdm(range(-3, 4, 1), desc="progress of script"):
     print(u)
     
     #let user name the csv file and specify the directory
-    user_input_dir = '/mnt/newstorage/summer_project/results'
+    #user_input_dir = '/mnt/newstorage/summer_project/results'
+    user_input_dir = '/home/vincent-gu/summer_project/results'
     #user_input_file = input('Name the csv file: ')
     user_input_file = 'result.csv'
     file_path = os.path.join(user_input_dir, user_input_file)
