@@ -20,10 +20,10 @@ def plot_and_regress(csv_file, cx, cy1, cy2, cy3, cy4, save_path):
 
     # subplot for y1 
     plt.subplot(2, 2, 1)
-    plt.scatter(x, y1, color='blue', label=f'{data.columns[1]} vs {data.columns[0]}')
-    plt.xlabel(data.columns[0])
-    plt.ylabel(data.columns[1])
-    plt.title(f'{data.columns[1]} vs {data.columns[0]}')
+    plt.scatter(x, y1, color='blue', label=f'{data.columns[cy1]} vs {data.columns[cx]}')
+    plt.xlabel(data.columns[cx])
+    plt.ylabel(data.columns[cy1])
+    plt.title(f'{data.columns[cy1]} vs {data.columns[cx]}')
 
     # Split the data into first half and second half
     midpoint = len(x) // 2  # Calculate the midpoint to split the data
@@ -52,10 +52,10 @@ def plot_and_regress(csv_file, cx, cy1, cy2, cy3, cy4, save_path):
 
     # subplot for y2 
     plt.subplot(2, 2, 2)
-    plt.scatter(x, y2, color='blue', label=f'{data.columns[2]} vs {data.columns[0]}')
-    plt.xlabel(data.columns[0])
-    plt.ylabel(data.columns[2])
-    plt.title(f'{data.columns[2]} vs {data.columns[0]}')
+    plt.scatter(x, y2, color='blue', label=f'{data.columns[cy2]} vs {data.columns[cx]}')
+    plt.xlabel(data.columns[cx])
+    plt.ylabel(data.columns[cy2])
+    plt.title(f'{data.columns[cy2]} vs {data.columns[cx]}')
 
     # Split the data into first half and second half
     midpoint = len(x) // 2  # Calculate the midpoint to split the data
@@ -83,10 +83,10 @@ def plot_and_regress(csv_file, cx, cy1, cy2, cy3, cy4, save_path):
 
     # subplot for y3 
     plt.subplot(2, 2, 3)
-    plt.scatter(x, y3, color='blue', label=f'{data.columns[3]} vs {data.columns[0]}')
-    plt.xlabel(data.columns[0])
-    plt.ylabel(data.columns[3])
-    plt.title(f'{data.columns[3]} vs {data.columns[0]}')
+    plt.scatter(x, y3, color='blue', label=f'{data.columns[cy3]} vs {data.columns[cx]}')
+    plt.xlabel(data.columns[cx])
+    plt.ylabel(data.columns[cy3])
+    plt.title(f'{data.columns[cy3]} vs {data.columns[cx]}')
 
     # Split the data into first half and second half
     midpoint = len(x) // 2  # Calculate the midpoint to split the data
@@ -114,10 +114,10 @@ def plot_and_regress(csv_file, cx, cy1, cy2, cy3, cy4, save_path):
 
     # subplot for y4
     plt.subplot(2, 2, 4)
-    plt.scatter(x, y4, color='blue', label=f'{data.columns[4]} vs {data.columns[0]}')
-    plt.xlabel(data.columns[0])
-    plt.ylabel(data.columns[4])
-    plt.title(f'{data.columns[4]} vs {data.columns[0]}')
+    plt.scatter(x, y4, color='blue', label=f'{data.columns[cy4]} vs {data.columns[cx]}')
+    plt.xlabel(data.columns[cx])
+    plt.ylabel(data.columns[cy4])
+    plt.title(f'{data.columns[cy4]} vs {data.columns[cx]}')
 
     # Split the data into first half and second half
     midpoint = len(x) // 2  # Calculate the midpoint to split the data
