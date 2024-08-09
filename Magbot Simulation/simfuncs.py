@@ -38,3 +38,17 @@ def simulate_magbot(data, q_init, msr):
         output[i, 7:9] = tau_s
 
     return output
+
+def compare(output1, output2):
+    length = len(output1)
+    dq = np.zeros((length, 2))
+
+    for i in range(length):
+        dq[i, :] = output2[i, 1:3] - output1[i, 1:3]
+    
+    dq1_mean = np.mean(np.abs(dq[:, 0]), axis=0)
+    dq1_max = np.max(np.abs(dq[:, 0]), axis=0)
+    dq2_mean = np.mean(np.abs(dq[:, 1]), axis=0)
+    dq2_max = np.max(np.abs(dq[:, 1]), axis=0)
+
+    return dq1_max, dq1_mean, dq2_max, dq2_mean
