@@ -24,8 +24,8 @@ The same coil currents are passed through both msr_1 and msr_2
 print('*********************************************************************')
 
 # name the csv file and specify the directory
-user_input_dir = '/mnt/newstorage/summer_project/results'
-#user_input_dir = '/home/vincent-gu/summer_project/results'
+#user_input_dir = '/mnt/newstorage/summer_project/results_dz1'
+user_input_dir = '/home/vincent-gu/summer_project/results_dz1'
 #user_input_file = input('Name the csv file: ')
 user_input_file = 'result.csv'
 file_path = os.path.join(user_input_dir, user_input_file)
@@ -84,7 +84,8 @@ while sure == False:
         sure = False
 
 #retrieve coil current data
-path = '/mnt/newstorage/summer_project/Magbot Simulation'
+#path = '/mnt/newstorage/summer_project/Magbot Simulation'
+path = '/home/vincent-gu/summer_project/Magbot Simulation'
 data = pd.read_csv(os.path.join(path, 'coil_currents.csv'), header='infer')
 
 # set translation based on user inputs
@@ -150,7 +151,8 @@ for i in tqdm(np.arange(-5, 5.1, 0.1), desc="Process"):
     plt.xlabel('Time (seconds)')
     plt.ylabel('Joint Angles (degrees)')
     plt.legend()
-    directory = '/mnt/newstorage/summer_project/images'
+    #directory = '/mnt/newstorage/summer_project/images_dz1'
+    directory = '/home/vincent-gu/summer_project/images_dz1'
     filename1 = f'q1_dev{str(i)}.png'
     full_path1 = os.path.join(directory, filename1)
     plt.savefig(full_path1)
@@ -172,7 +174,7 @@ for i in tqdm(np.arange(-5, 5.1, 0.1), desc="Process"):
     nf += 2
 
 # plot error vs. std_dev
-#save_path = '/home/vincent-gu/summer_project/results/results.png'
-save_path = '/mnt/newstorage/summer_project/results/results.png'
+save_path = '/home/vincent-gu/summer_project/results/results.png'
+#save_path = '/mnt/newstorage/summer_project/results/results.png'
 plot_and_regress(file_path, cx, 6, 7, 8, 9, save_path)
 print('*********************************************************************')
