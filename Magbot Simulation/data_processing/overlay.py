@@ -3,38 +3,95 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import os
 
-#root_path = '/mnt/newstorage/summer_project'
-root_path = '/home/vincent-gu/summer_project'
-folder1 = 'results_dx2'
-folder2 = 'results_dy2'
-folder3 = 'results_dz2'
+mag1_folders = ['results_dx1', 'results_dy1', 'results_dz1']
+mag2_folders = ['results_dx2', 'results_dy2', 'results_dz2']
+#png_names = ['d1_dq1_max', 'd1_dq2_max', 'd2_dq1_max', 'd2_dq2_max']
+png_names = ['d1_dq1_mean', 'd1_dq2_mean', 'd2_dq1_mean', 'd2_dq2_mean']
+x_labels = ['Magnet1 Displacement [mm]', 'Magnet2 Displacement [mm]']
+y_labels = ['Delta_q1 [deg]', 'Delta_q2 [deg]']
+colors = ['blue', 'green', 'red']
 
-csv_1 = os.path.join(root_path, folder1, 'result.csv')
-csv_2 = os.path.join(root_path, folder2, 'result.csv')
-csv_3 = os.path.join(root_path, folder3, 'result.csv')
+root_path = '/mnt/newstorage/summer_project'
 
-data1 = pd.read_csv(csv_1)
-data2 = pd.read_csv(csv_2)
-data3 = pd.read_csv(csv_3)
+cy1 = 7 #column for dq1_max
+cy2 = 9 #column for dq2_max
 
-cx = 3
-cy = 6
+#process the mag_1 dq1
+for i in range(len(mag1_folders)):
+    csv_file = os.path.join(root_path, mag1_folders[i], 'result.csv')
+    data = pd.read_csv(csv_file)
 
-x = data1.iloc[:, cx]
-y1 = data1.iloc[:, cy]
-y2 = data2.iloc[:, cy]
-y3 = data3.iloc[:, cy]
+    x = data.iloc[:, i]
+    y = data.iloc[:, cy1]
 
-plt.scatter(x, y1, color = 'blue', label = f'{data1.columns[cy]} vs {data1.columns[3]} [mm]')
-plt.scatter(x, y2, color = 'red', label = f'{data2.columns[cy]} vs {data2.columns[4]} [mm]')
-plt.scatter(x, y3, color = 'green', label = f'{data3.columns[cy]} vs {data3.columns[5]} [mm]')
-plt.xlabel('Magnet1 Displacement [mm]')
-plt.ylabel('delta_q1 [deg]')
-plt.title('Delta_q1 vs. different magnet1 displacement')
+    plt.scatter(x, y, color = colors[i], label = f'{data.columns[cy1]} vs. {data.columns[i]} [mm]')
+
+plt.xlabel(x_labels[0])
+plt.ylabel(y_labels[0])
+plt.title(f'{y_labels[0]} vs. different {x_labels[0]}')
 plt.legend()
-#plt.show()
-
-png_name = 'd2_dq2_max'
+png_name = png_names[0]
 png_path = os.path.join(root_path, 'images_present')
 save_path = os.path.join(png_path, png_name)
 plt.savefig(save_path)
+plt.close()
+
+#mag_1 dq2
+for i in range(len(mag2_folders)):
+    csv_file = os.path.join(root_path, mag1_folders[i], 'result.csv')
+    data = pd.read_csv(csv_file)
+
+    x = data.iloc[:, i]
+    y = data.iloc[:, cy2]
+
+    plt.scatter(x, y, color = colors[i], label = f'{data.columns[cy1]} vs. {data.columns[i]} [mm]')
+
+plt.xlabel(x_labels[0])
+plt.ylabel(y_labels[1])
+plt.title(f'{y_labels[1]} vs. different {x_labels[0]}')
+plt.legend()
+png_name = png_names[1]
+png_path = os.path.join(root_path, 'images_present')
+save_path = os.path.join(png_path, png_name)
+plt.savefig(save_path)
+plt.close()
+
+#mag_2 dq1
+for i in range(len(mag1_folders), len(mag2_folders)+len(mag1_folders)):
+    csv_file = os.path.join(root_path, mag2_folders[i-len(mag1_folders)], 'result.csv')
+    data = pd.read_csv(csv_file)
+
+    x = data.iloc[:, i]
+    y = data.iloc[:, cy1]
+
+    plt.scatter(x, y, color = colors[i-len(mag1_folders)], label = f'{data.columns[cy1]} vs. {data.columns[i]} [mm]')
+
+plt.xlabel(x_labels[1])
+plt.ylabel(y_labels[0])
+plt.title(f'{y_labels[0]} vs. different {x_labels[1]}')
+plt.legend()
+png_name = png_names[2]
+png_path = os.path.join(root_path, 'images_present')
+save_path = os.path.join(png_path, png_name)
+plt.savefig(save_path)
+plt.close()
+
+#mag_2 dq2
+for i in range(len(mag1_folders), len(mag2_folders)+len(mag1_folders)):
+    csv_file = os.path.join(root_path, mag2_folders[i-len(mag1_folders)], 'result.csv')
+    data = pd.read_csv(csv_file)
+
+    x = data.iloc[:, i]
+    y = data.iloc[:, cy2]
+
+    plt.scatter(x, y, color = colors[i-len(mag1_folders)], label = f'{data.columns[cy1]} vs. {data.columns[i]} [mm]')
+
+plt.xlabel(x_labels[1])
+plt.ylabel(y_labels[1])
+plt.title(f'{y_labels[1]} vs. different {x_labels[1]}')
+plt.legend()
+png_name = png_names[3]
+png_path = os.path.join(root_path, 'images_present')
+save_path = os.path.join(png_path, png_name)
+plt.savefig(save_path)
+plt.close()
