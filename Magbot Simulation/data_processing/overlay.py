@@ -16,8 +16,8 @@ root_path = '/mnt/newstorage/summer_project'
 cy1 = 3 #column for dq1_max
 cy2 = 5 #column for dq2_max
 
-cy1, cy2 = cy1+1, cy2+1
-png_names = ['th_dq1_mean', 'th_dq2_mean']
+#cy1, cy2 = cy1+1, cy2+1
+#png_names = ['th_dq1_mean', 'th_dq2_mean']
 
 #process the mag_1 dq1
 for i in range(len(mag1_folders)):
