@@ -47,7 +47,7 @@ for i in range(len(mag2_folders)):
     x = data.iloc[:, i]
     y = data.iloc[:, cy2]
 
-    plt.scatter(x, y, color = colors[i], label = f'{data.columns[cy1]} vs. {data.columns[i]}{unit}')
+    plt.scatter(x, y, color = colors[i], label = f'{data.columns[cy2]} vs. {data.columns[i]}{unit}')
 
 plt.xlabel(x_labels[0])
 plt.ylabel(y_labels[1])
@@ -87,7 +87,7 @@ for i in range(len(mag1_folders), len(mag2_folders)+len(mag1_folders)):
     x = data.iloc[:, i]
     y = data.iloc[:, cy2]
 
-    plt.scatter(x, y, color = colors[i-len(mag1_folders)], label = f'{data.columns[cy1]} vs. {data.columns[i]}{unit}')
+    plt.scatter(x, y, color = colors[i-len(mag1_folders)], label = f'{data.columns[cy2]} vs. {data.columns[i]}{unit}')
 
 plt.xlabel(x_labels[1])
 plt.ylabel(y_labels[1])
