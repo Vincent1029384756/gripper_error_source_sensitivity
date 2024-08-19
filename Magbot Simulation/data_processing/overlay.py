@@ -15,8 +15,8 @@ root_path = '/mnt/newstorage/summer_project'
 cy1 = 2 #column for dq1_max
 cy2 = 4 #column for dq2_max
 
-cy1, cy2 = cy1+1, cy2+1
-png_names = ['t1_dq1_mean', 't1_dq2_mean']
+#cy1, cy2 = cy1+1, cy2+1
+#png_names = ['t1_dq1_mean', 't1_dq2_mean']
 
 #process the mag_1 dq1
 for i in range(len(mag1_folders)):
@@ -46,7 +46,7 @@ for i in range(len(mag1_folders)):
     x = data.iloc[:, i]
     y = data.iloc[:, cy2]
 
-    plt.scatter(x, y, color = colors[i], label = f'{data.columns[cy1]} vs. {data.columns[i]} [T]')
+    plt.scatter(x, y, color = colors[i], label = f'{data.columns[cy2]} vs. {data.columns[i]} [T]')
 
 plt.xlabel(x_labels[0])
 plt.ylabel(y_labels[1])
