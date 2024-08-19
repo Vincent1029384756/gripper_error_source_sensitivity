@@ -5,16 +5,16 @@ import os
 
 mag1_folders = ['results_dx1', 'results_dy1', 'results_dz1']
 mag2_folders = ['results_dx2', 'results_dy2', 'results_dz2']
-#png_names = ['d1_dq1_max', 'd1_dq2_max', 'd2_dq1_max', 'd2_dq2_max']
-png_names = ['d1_dq1_mean', 'd1_dq2_mean', 'd2_dq1_mean', 'd2_dq2_mean']
+png_names = ['d1_dq1_max', 'd1_dq2_max', 'd2_dq1_max', 'd2_dq2_max']
+#png_names = ['d1_dq1_mean', 'd1_dq2_mean', 'd2_dq1_mean', 'd2_dq2_mean']
 x_labels = ['Magnet1 Displacement [mm]', 'Magnet2 Displacement [mm]']
 y_labels = ['Delta_q1 [deg]', 'Delta_q2 [deg]']
 colors = ['blue', 'green', 'red']
 
 root_path = '/mnt/newstorage/summer_project'
 
-cy1 = 7 #column for dq1_max
-cy2 = 9 #column for dq2_max
+cy1 = 6 #column for dq1_max
+cy2 = 8 #column for dq2_max
 
 #process the mag_1 dq1
 for i in range(len(mag1_folders)):
@@ -44,7 +44,7 @@ for i in range(len(mag2_folders)):
     x = data.iloc[:, i]
     y = data.iloc[:, cy2]
 
-    plt.scatter(x, y, color = colors[i], label = f'{data.columns[cy1]} vs. {data.columns[i]} [mm]')
+    plt.scatter(x, y, color = colors[i], label = f'{data.columns[cy2]} vs. {data.columns[i]} [mm]')
 
 plt.xlabel(x_labels[0])
 plt.ylabel(y_labels[1])
@@ -84,7 +84,7 @@ for i in range(len(mag1_folders), len(mag2_folders)+len(mag1_folders)):
     x = data.iloc[:, i]
     y = data.iloc[:, cy2]
 
-    plt.scatter(x, y, color = colors[i-len(mag1_folders)], label = f'{data.columns[cy1]} vs. {data.columns[i]} [mm]')
+    plt.scatter(x, y, color = colors[i-len(mag1_folders)], label = f'{data.columns[cy2]} vs. {data.columns[i]} [mm]')
 
 plt.xlabel(x_labels[1])
 plt.ylabel(y_labels[1])
